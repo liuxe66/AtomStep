@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AtomStep" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.AtomStep" parent="Base.Theme.AtomStep" />
+
+    <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <color name="color_trans">#00000000</color>
+
+
+    <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@color/color_trans</item>
+    </style>
+    <style name="AppBottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppBottomSheetStyle</item>
+    </style>
+    <style name="AppBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background"></item>
+    </style>
+</resources>

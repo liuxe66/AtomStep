@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="statusBarHeight"
+            type="int" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_act_bg">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_360"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/shape_home_top_bg"/>
+
+        <TextView
+            android:id="@+id/tv_top"
+            bindStatusBarHeight="@{statusBarHeight}"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_item_bg"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:paddingVertical="@dimen/dp_16"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_80"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_top">
+
+            <TextView
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="1024"
+                android:textColor="@color/color_text_title"
+                android:textSize="@dimen/sp_30"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="/6000步"
+                android:textColor="@color/color_text_sub"
+                android:textSize="@dimen/sp_14"
+                android:layout_marginStart="@dimen/dp_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_num" />
+
+
+
+            <com.hi.dhl.jprogressview.JProgressView
+                android:id="@+id/progress_num"
+                android:layout_width="@dimen/dp_180"
+                android:layout_height="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_all"
+                app:progress_animate_duration="1000"
+                app:progress_color="@color/green_1"
+                app:progress_color_background="@color/color_progress_grey_bg"
+                app:progress_paint_bg_width="@dimen/dp_10"
+                app:progress_paint_value_width="@dimen/dp_10"
+                app:progress_type="2"
+                app:progress_value="40"
+                app:progress_value_max="100" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_num">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/step_walk" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:includeFontPadding="false"
+                        android:text="120"
+                        android:textColor="@color/color_text_title"
+                        android:textSize="@dimen/sp_24"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="步"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/step_calories" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:includeFontPadding="false"
+                        android:text="120"
+                        android:textColor="@color/color_text_title"
+                        android:textSize="@dimen/sp_24"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="千卡"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/step_miles" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:includeFontPadding="false"
+                        android:text="120"
+                        android:textColor="@color/color_text_title"
+                        android:textSize="@dimen/sp_24"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="公里"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_200"
+            app:layout_constraintDimensionRatio="3:5"
+            android:src="@drawable/ic_male"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/tv_top"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_drink_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:background="@drawable/shape_item_bg"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_top">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_drink"
+                android:layout_margin="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/progress_plan"
+                app:layout_constraintEnd_toEndOf="@id/progress_plan"
+                app:layout_constraintStart_toStartOf="@id/progress_plan"
+                app:layout_constraintTop_toTopOf="@id/progress_plan" />
+
+            <com.hi.dhl.jprogressview.JProgressView
+                android:id="@+id/progress_plan"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:progress_animate_duration="1000"
+                app:progress_color="@color/green_1"
+                app:progress_color_background="@color/color_progress_grey_bg"
+                app:progress_paint_bg_width="10dp"
+                app:progress_paint_value_width="10dp"
+                app:progress_type="1"
+                app:progress_value="30"
+                app:progress_value_max="100"
+                app:progress_circle_sweep_angle="1"/>
+
+            <TextView
+                android:id="@+id/tv_drink_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/progress_plan"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="@dimen/dp_20"
+                android:textSize="@dimen/sp_12"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:textColor="@color/green_1"
+                android:text="饮水量"/>
+
+            <TextView
+                android:id="@+id/tv_drink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/progress_plan"
+                app:layout_constraintBottom_toTopOf="@id/tv_drink_tip"
+                android:layout_marginStart="@dimen/dp_20"
+                android:textSize="@dimen/sp_24"
+                android:text="200"
+                android:layout_marginBottom="@dimen/dp_4"/>
+
+            <TextView
+                android:id="@+id/tv_drink_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/tv_drink"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_drink"
+                android:textSize="@dimen/sp_14"
+                android:textColor="@color/color_text_sub"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="/1200ml"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingHorizontal="@dimen/dp_24"
+                android:paddingVertical="10dp"
+                android:gravity="center"
+                android:textColor="@color/green_1"
+                android:text="喝水"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/shape_btn_bg"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
