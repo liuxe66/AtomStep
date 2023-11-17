@@ -12,11 +12,26 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
 import androidx.annotation.Nullable
+import androidx.core.app.ServiceCompat.stopForeground
 import com.atom.atomstep.R
+import com.atom.atomstep.app.AtomApp
 import com.atom.atomstep.data.constant.ConstantData
+import com.atom.atomstep.data.entity.StepEntity
+import com.atom.atomstep.data.repo.StepRepository
 import com.atom.atomstep.ui.MainActivity
+import com.atom.atomstep.utils.LogUtils
 import com.atom.atomstep.utils.TimeUtil
+import com.drake.channel.sendEvent
+import com.drake.channel.sendTag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -25,23 +40,29 @@ import java.util.*
  * To do:
  */
 class StepService : Service(), SensorEventListener {
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     //当前日期
     private var currentDate: String? = null
+
     //当前步数
     private var currentStep: Int = 0
+
     //传感器
     private var sensorManager: SensorManager? = null
 
     //计步传感器类型 0-counter 1-detector
     private var stepSensor = -1
+
     //广播接收
     private var mInfoReceiver: BroadcastReceiver? = null
-    //发送消息，用来和Service之间传递步数
-    private val messenger = Messenger(MessengerHandler())
+
     //是否有当天的记录
     private var hasRecord: Boolean = false
+
     //未记录之前的步数
     private var hasStepCount: Int = 0
+
     //下次记录之前的步数
     private var previousStepCount: Int = 0
     private var builder: Notification.Builder? = null
@@ -49,17 +70,18 @@ class StepService : Service(), SensorEventListener {
     private var notificationManager: NotificationManager? = null
     private var nfIntent: Intent? = null
 
+    private val stepDao = AtomApp.appDatabase.stepDao()
 
     override fun onCreate() {
         super.onCreate()
         initBroadcastReceiver()
-        Thread(Runnable { getStepDetector() }).start()
         initTodayData()
+        getStepDetector()
     }
 
     @Nullable
     override fun onBind(intent: Intent): IBinder? {
-        return messenger.binder
+        return null
     }
 
 
@@ -70,8 +92,6 @@ class StepService : Service(), SensorEventListener {
          */
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
-        //----------------  针对8.0 新增代码 --------------------------------------
         builder = Notification.Builder(this.applicationContext, ConstantData.CHANNEL_ID)
         val notificationChannel =
             NotificationChannel(
@@ -97,25 +117,6 @@ class StepService : Service(), SensorEventListener {
         return START_STICKY
     }
 
-    /**
-     * 自定义handler
-     */
-    private inner class MessengerHandler : Handler() {
-        override fun handleMessage(msg: Message) = when (msg.what) {
-            ConstantData.MSG_FROM_CLIENT -> try {
-                //这里负责将当前的步数发送出去，可以在界面或者其他地方获取，我这里是在MainActivity中获取来更新界面
-                val messenger = msg.replyTo
-                val replyMsg = Message.obtain(null, ConstantData.MSG_FROM_SERVER)
-                val bundle = Bundle()
-                bundle.putInt("steps", currentStep)
-                replyMsg.data = bundle
-                messenger.send(replyMsg)
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-            }
-            else -> super.handleMessage(msg)
-        }
-    }
 
     /**
      * 初始化广播
@@ -166,6 +167,12 @@ class StepService : Service(), SensorEventListener {
      * 初始化当天数据
      */
     private fun initTodayData() {
+
+        coroutineScope.launch {
+            val stepEntity = stepDao.queryStepCurrent(LocalDate.now())
+            currentStep =
+                if (stepEntity == null) 0 else Integer.parseInt(stepEntity.step.toString())
+        }
 
     }
 
@@ -221,6 +228,7 @@ class StepService : Service(), SensorEventListener {
      * 只有当用户关机以后，该数据才会清空，所以需要做数据保护
      */
     override fun onSensorChanged(event: SensorEvent) {
+
         if (stepSensor == 0) {
             val tempStep = event.values[0].toInt()
             if (!hasRecord) {
@@ -249,8 +257,18 @@ class StepService : Service(), SensorEventListener {
      * 保存当天的数据到数据库中，并去刷新通知栏
      */
     private fun saveStepData() {
+        coroutineScope.launch {
+            val stepEntity = stepDao.queryStepCurrent(LocalDate.now())
+            if (stepEntity == null) {
+                val data = StepEntity(date = LocalDate.now(), step = 0)
+                stepDao.insertStep(data)
+            } else {
+                stepEntity.step = currentStep
+                stepDao.updateStep(stepEntity)
+            }
 
-        setStepBuilder()
+            setStepBuilder()
+        }
     }
 
     private fun setStepBuilder() {
@@ -265,26 +283,25 @@ class StepService : Service(), SensorEventListener {
             ?.setLargeIcon(
                 BitmapFactory.decodeResource(
                     this.resources,
-                    R.mipmap.ic_launcher
+                    R.drawable.ic_launcher
                 )
             )
             ?.setContentTitle("今日步数" + currentStep + "步")
-            ?.setSmallIcon(R.mipmap.ic_launcher)
-            ?.setContentText("加油，要记得勤加运动哦")
+            ?.setSmallIcon(R.drawable.ic_launcher)
+            ?.setContentText("健康，每一步都值得")
         // 获取构建好的Notification
         val stepNotification = builder?.build()
         //调用更新
         notificationManager?.notify(ConstantData.NOTIFY_ID, stepNotification)
+        LogUtils.e("今日步数" + currentStep + "步")
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        coroutineScope.cancel()
         //主界面中需要手动调用stop方法service才会结束
         stopForeground(true)
         unregisterReceiver(mInfoReceiver)
-    }
-
-    override fun onUnbind(intent: Intent): Boolean {
-        return super.onUnbind(intent)
     }
 }

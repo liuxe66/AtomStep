@@ -13,5 +13,5 @@ import java.util.Date
  */
 @Entity(tableName = "step_table")
 data class StepEntity(
-    @PrimaryKey(autoGenerate = true) val stepId: Int = 1, val timestamp: LocalDate, val step: Int
+    @PrimaryKey(autoGenerate = true) val stepId: Int = 1, val date: LocalDate, var step: Int
 )

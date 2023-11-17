@@ -3,6 +3,8 @@ package com.atom.atomstep.data.dao
 import androidx.room.*
 import com.atom.atomstep.data.entity.StepEntity
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -13,52 +15,49 @@ import java.util.*
 @Dao
 interface StepDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertStep(step: StepEntity)
-
     /**
-     * 查询今天
-     * @return Flow<List<TransRcordEntity>>
+     * 根据日期查询
+     * @param day String
+     * @return Flow<List<StepEntity>>
      */
-    @Query(
-        "SELECT * FROM step_table WHERE timestamp >= date('now', 'localtime', 'start of day') AND timestamp< date('now', 'localtime', 'start of day', '+1 day')"
-    )
-    fun queryStepToday(): Flow<List<StepEntity>>
+    @Query("SELECT * FROM step_table WHERE date = :date")
+    fun queryStepByDay(date:LocalDate):  Flow<StepEntity?>
 
     /**
      * 根据日期查询
      * @param day String
      * @return Flow<List<StepEntity>>
      */
-    @Query(
-        "SELECT * FROM step_table\n" + "WHERE strftime('%Y-%m-%d', timestamp) = :day"
-    )
-    fun queryStepByDay(day: String): Flow<List<StepEntity>>
+    @Query("SELECT * FROM step_table WHERE date = :date")
+    fun queryStepCurrent(date:LocalDate): StepEntity?
 
     /**
      * 查询本周
      * @return Flow<List<TransRcordEntity>>
      */
-    @Query("SELECT * FROM step_table WHERE strftime('%W', timestamp / 1000, 'unixepoch', 'localtime') = strftime('%W', 'now', 'localtime')")
-    fun queryStepCurWeek(): Flow<List<StepEntity>>
+    @Query("SELECT * FROM step_table WHERE date BETWEEN :startOfWeek AND :endOfWeek")
+    fun queryStepCurWeek(startOfWeek: LocalDate, endOfWeek: LocalDate): Flow<List<StepEntity>>
 
     /**
      * 查询当月
      * @return Flow<List<TransRcordEntity>>
      */
-    @Query("SELECT * FROM step_table WHERE strftime('%m', timestamp / 1000, 'unixepoch', 'localtime') = strftime('%m', 'now', 'localtime')")
-    fun queryStepCurMonth(): Flow<List<StepEntity>>
+    @Query("SELECT * FROM step_table WHERE date >= :startOfMonth AND date <= :endOfMonth")
+    fun queryStepCurMonth(startOfMonth: LocalDate, endOfMonth: LocalDate): Flow<List<StepEntity>>
 
     /**
      * 查询所有
      */
-    @Query("SELECT * FROM step_table ORDER BY timestamp DESC")
+    @Query("SELECT * FROM step_table ORDER BY date DESC")
     fun queryStepAll(): Flow<List<StepEntity>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStep(step: StepEntity)
+
     @Delete
-    fun deleteStep(step: StepEntity)
+    suspend fun deleteStep(step: StepEntity)
 
     @Update
-    fun updateStep(step: StepEntity)
+    suspend fun updateStep(step: StepEntity)
 
 }

@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.atom.atomstep.ui.home.HomeFragment
+import com.atom.atomstep.ui.mine.MineFragment
+import com.atom.atomstep.ui.table.TableFragment
 
 /**
  *  author : liuxe
@@ -14,8 +16,8 @@ class MainPageAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(
 
     private val fragmentList = listOf(
         HomeFragment(),
-        HomeFragment(),
-        HomeFragment()
+        TableFragment(),
+        MineFragment()
     )
 
     override fun getItemCount(): Int = fragmentList.size

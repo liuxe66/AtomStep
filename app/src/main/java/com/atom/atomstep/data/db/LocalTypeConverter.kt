@@ -3,6 +3,7 @@ package com.atom.atomstep.data.db
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 /**
@@ -13,15 +14,14 @@ import java.time.format.DateTimeFormatter
  * </pre>
  */
 open class LocalTypeConverter {
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     @TypeConverter
-    open fun fromLocalDate(dateTime: LocalDate?): String? {
-        return dateTime?.format(formatter)
+    fun fromLocalDate(date: LocalDate?): Long? {
+        return date?.toEpochDay()
     }
 
     @TypeConverter
-    open fun toLocalDate(dateTimeString: String?): LocalDate? {
-        return if (dateTimeString != null) LocalDate.parse(dateTimeString, formatter) else null
+    fun toLocalDate(epochDay: Long?): LocalDate? {
+        return epochDay?.let { LocalDate.ofEpochDay(it) }
     }
 }

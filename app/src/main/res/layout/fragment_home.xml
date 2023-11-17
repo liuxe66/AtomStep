@@ -44,11 +44,10 @@
             app:layout_constraintTop_toBottomOf="@id/tv_top">
 
             <TextView
-                android:id="@+id/tv_num"
+                android:id="@+id/tv_step_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
-                android:text="1024"
                 android:textColor="@color/color_text_title"
                 android:textSize="@dimen/sp_30"
                 android:textStyle="bold"
@@ -56,7 +55,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_all"
+                android:id="@+id/tv_step_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
@@ -65,24 +64,23 @@
                 android:textSize="@dimen/sp_14"
                 android:layout_marginStart="@dimen/dp_4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_num" />
+                app:layout_constraintTop_toBottomOf="@id/tv_step_num" />
 
 
 
             <com.hi.dhl.jprogressview.JProgressView
-                android:id="@+id/progress_num"
+                android:id="@+id/progress_step_num"
                 android:layout_width="@dimen/dp_180"
                 android:layout_height="@dimen/dp_12"
                 android:layout_marginTop="@dimen/dp_10"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_all"
+                app:layout_constraintTop_toBottomOf="@id/tv_step_plan"
                 app:progress_animate_duration="1000"
                 app:progress_color="@color/green_1"
                 app:progress_color_background="@color/color_progress_grey_bg"
                 app:progress_paint_bg_width="@dimen/dp_10"
                 app:progress_paint_value_width="@dimen/dp_10"
                 app:progress_type="2"
-                app:progress_value="40"
                 app:progress_value_max="100" />
             <LinearLayout
                 android:layout_width="0dp"
@@ -90,7 +88,7 @@
                 android:layout_marginTop="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/progress_num">
+                app:layout_constraintTop_toBottomOf="@id/progress_step_num">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -105,11 +103,11 @@
                         android:src="@drawable/step_walk" />
 
                     <TextView
+                        android:id="@+id/tv_today_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:includeFontPadding="false"
-                        android:text="120"
                         android:textColor="@color/color_text_title"
                         android:textSize="@dimen/sp_24"
                         android:textStyle="bold" />
@@ -136,11 +134,11 @@
                         android:src="@drawable/step_calories" />
 
                     <TextView
+                        android:id="@+id/tv_today_cal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:includeFontPadding="false"
-                        android:text="120"
                         android:textColor="@color/color_text_title"
                         android:textSize="@dimen/sp_24"
                         android:textStyle="bold" />
@@ -167,11 +165,11 @@
                         android:src="@drawable/step_miles" />
 
                     <TextView
+                        android:id="@+id/tv_today_km"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:includeFontPadding="false"
-                        android:text="120"
                         android:textColor="@color/color_text_title"
                         android:textSize="@dimen/sp_24"
                         android:textStyle="bold" />
@@ -214,13 +212,13 @@
                 android:layout_height="0dp"
                 android:src="@drawable/ic_drink"
                 android:layout_margin="10dp"
-                app:layout_constraintBottom_toBottomOf="@id/progress_plan"
-                app:layout_constraintEnd_toEndOf="@id/progress_plan"
-                app:layout_constraintStart_toStartOf="@id/progress_plan"
-                app:layout_constraintTop_toTopOf="@id/progress_plan" />
+                app:layout_constraintBottom_toBottomOf="@id/progress_drink_plan"
+                app:layout_constraintEnd_toEndOf="@id/progress_drink_plan"
+                app:layout_constraintStart_toStartOf="@id/progress_drink_plan"
+                app:layout_constraintTop_toTopOf="@id/progress_drink_plan" />
 
             <com.hi.dhl.jprogressview.JProgressView
-                android:id="@+id/progress_plan"
+                android:id="@+id/progress_drink_plan"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,7 +237,7 @@
                 android:id="@+id/tv_drink_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/progress_plan"
+                app:layout_constraintStart_toEndOf="@id/progress_drink_plan"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="@dimen/dp_20"
                 android:textSize="@dimen/sp_12"
@@ -251,7 +249,7 @@
                 android:id="@+id/tv_drink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/progress_plan"
+                app:layout_constraintStart_toEndOf="@id/progress_drink_plan"
                 app:layout_constraintBottom_toTopOf="@id/tv_drink_tip"
                 android:layout_marginStart="@dimen/dp_20"
                 android:textSize="@dimen/sp_24"
@@ -270,6 +268,7 @@
                 android:text="/1200ml"/>
 
             <TextView
+                android:id="@+id/tv_drink_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
