@@ -54,9 +54,6 @@ interface StepDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStep(step: StepEntity)
 
-    @Delete
-    suspend fun deleteStep(step: StepEntity)
-
     @Update
     suspend fun updateStep(step: StepEntity)
 

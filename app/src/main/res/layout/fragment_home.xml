@@ -68,9 +68,9 @@
 
 
 
-            <com.hi.dhl.jprogressview.JProgressView
+            <com.atom.atomstep.widget.JProgressView
                 android:id="@+id/progress_step_num"
-                android:layout_width="@dimen/dp_180"
+                android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_12"
                 android:layout_marginTop="@dimen/dp_10"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,130 +82,145 @@
                 app:progress_paint_value_width="@dimen/dp_10"
                 app:progress_type="2"
                 app:progress_value_max="100" />
-            <LinearLayout
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_week"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_step_num"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/progress_step_num">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/step_walk" />
-
-                    <TextView
-                        android:id="@+id/tv_today_step"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/color_text_title"
-                        android:textSize="@dimen/sp_24"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="步"
-                        android:textColor="@color/color_text_sub"
-                        android:textSize="@dimen/sp_10"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/step_calories" />
-
-                    <TextView
-                        android:id="@+id/tv_today_cal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/color_text_title"
-                        android:textSize="@dimen/sp_24"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="千卡"
-                        android:textColor="@color/color_text_sub"
-                        android:textSize="@dimen/sp_10"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/step_miles" />
-
-                    <TextView
-                        android:id="@+id/tv_today_km"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/color_text_title"
-                        android:textSize="@dimen/sp_24"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="公里"
-                        android:textColor="@color/color_text_sub"
-                        android:textSize="@dimen/sp_10"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/dp_20"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
+            android:id="@+id/iv_person"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_200"
             app:layout_constraintDimensionRatio="3:5"
-            android:src="@drawable/ic_male"
+            android:src="@drawable/ic_man"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/tv_top"/>
+
+        <LinearLayout
+            android:id="@+id/ll_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/shape_item_bg"
+            android:padding="20dp"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            app:layout_constraintTop_toBottomOf="@id/cl_top">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/step_walk" />
+
+                <TextView
+                    android:id="@+id/tv_today_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/color_text_title"
+                    android:textSize="@dimen/sp_24"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分钟"
+                    android:textColor="@color/color_text_sub"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/step_calories" />
+
+                <TextView
+                    android:id="@+id/tv_today_cal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/color_text_title"
+                    android:textSize="@dimen/sp_24"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="千卡"
+                    android:textColor="@color/color_text_sub"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/step_miles" />
+
+                <TextView
+                    android:id="@+id/tv_today_km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/color_text_title"
+                    android:textSize="@dimen/sp_24"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公里"
+                    android:textColor="@color/color_text_sub"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_drink_plan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_16"
             android:layout_marginHorizontal="@dimen/dp_16"
             android:background="@drawable/shape_item_bg"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_top">
+            app:layout_constraintTop_toBottomOf="@id/ll_data">
 
             <ImageView
                 android:layout_width="0dp"
@@ -217,7 +232,7 @@
                 app:layout_constraintStart_toStartOf="@id/progress_drink_plan"
                 app:layout_constraintTop_toTopOf="@id/progress_drink_plan" />
 
-            <com.hi.dhl.jprogressview.JProgressView
+            <com.atom.atomstep.widget.JProgressView
                 android:id="@+id/progress_drink_plan"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
@@ -229,7 +244,6 @@
                 app:progress_paint_bg_width="10dp"
                 app:progress_paint_value_width="10dp"
                 app:progress_type="1"
-                app:progress_value="30"
                 app:progress_value_max="100"
                 app:progress_circle_sweep_angle="1"/>
 
@@ -252,8 +266,8 @@
                 app:layout_constraintStart_toEndOf="@id/progress_drink_plan"
                 app:layout_constraintBottom_toTopOf="@id/tv_drink_tip"
                 android:layout_marginStart="@dimen/dp_20"
-                android:textSize="@dimen/sp_24"
-                android:text="200"
+                android:textSize="@dimen/sp_30"
+                android:text="0"
                 android:layout_marginBottom="@dimen/dp_4"/>
 
             <TextView

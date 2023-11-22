@@ -7,12 +7,10 @@
 
     <style name="Theme.AtomStep" parent="Base.Theme.AtomStep" />
 
-    <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
-
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowBackground">@color/white</item>
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/green_1</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.AtomStep</item>
     </style>
 
     <color name="color_trans">#00000000</color>
@@ -21,9 +19,11 @@
     <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@color/color_trans</item>
     </style>
+
     <style name="AppBottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppBottomSheetStyle</item>
     </style>
+
     <style name="AppBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background"></item>
     </style>

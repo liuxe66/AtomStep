@@ -21,6 +21,11 @@ class Preference<T>() {
 
     companion object {
         const val firstOpen = "firstOpen"
+        const val userHeight = "userHeight"  //默认 170cm
+        const val userWeight = "userWeight"  //默认 60kg
+        const val userAge = "userAge"  //默认 24
+        const val userGender = "userGender"  //1 男 0 女
+
     }
 
     constructor(keyName: String,defaultValue: T) : this() {

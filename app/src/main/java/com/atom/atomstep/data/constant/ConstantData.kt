@@ -12,5 +12,6 @@ class ConstantData {
 
         const val CHANNEL_ID = "120"
         const val CHANNEL_NAME = "StepService"
+        const val ACTION_DATA = "com.atom.ACTION_UPDATE"
     }
 }

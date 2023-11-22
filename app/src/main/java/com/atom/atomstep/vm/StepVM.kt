@@ -1,5 +1,6 @@
 package com.atom.atomstep.vm
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.atom.atomstep.base.BaseViewModel
@@ -8,6 +9,7 @@ import com.atom.atomstep.data.repo.StepRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /**
@@ -18,11 +20,13 @@ import java.time.LocalDate
 class StepVM : BaseViewModel() {
     private val repository = StepRepository()
 
+    val stepCurWeekData = MutableLiveData<List<StepEntity>>()
+
     /**
      * 查询今天步数
      * @return Flow<List<StepEntity>>
      */
-    fun queryStepToday() = liveData(Dispatchers.IO) {
+    fun queryStepToday() = liveData {
         repository.queryStepToday().collectLatest {
             emit(it)
         }
@@ -33,7 +37,7 @@ class StepVM : BaseViewModel() {
      * @param day LocalDate
      * @return LiveData<StepEntity?>
      */
-    fun queryStepByDay(day:LocalDate) = liveData(Dispatchers.IO) {
+    fun queryStepByDay(day: LocalDate) = liveData{
         repository.queryStepByDay(day).collectLatest {
             emit(it)
         }
@@ -43,7 +47,7 @@ class StepVM : BaseViewModel() {
      * 查询所有 倒序
      * @return LiveData<List<StepEntity>>
      */
-    fun queryStepAll() = liveData(Dispatchers.IO) {
+    fun queryStepAll() = liveData {
         repository.queryStepAll().collectLatest {
             emit(it)
         }
@@ -53,13 +57,30 @@ class StepVM : BaseViewModel() {
      * 查询本周步数
      * @return Flow<List<StepEntity>>
      */
-    fun queryStepCurWeek() = liveData(Dispatchers.IO) {
+    fun queryStepCurWeek() = liveData(Dispatchers.IO){
         val now = LocalDate.now()
         val startOfWeek = now.minusDays(now.dayOfWeek.value - 1L)
         val endOfWeek = startOfWeek.plusDays(6)
 
-        repository.queryStepCurWeek(startOfWeek,endOfWeek).collectLatest {
-            emit(it)
+        repository.queryStepCurWeek(startOfWeek, endOfWeek).collectLatest {
+
+            val dateList = it
+
+            val resultList = mutableListOf<StepEntity>()
+
+            for (day in 0L until 7L) {
+                val dataForDay = dateList.filter { step ->
+                    step.date == startOfWeek.plusDays(day)
+                }
+                if (dataForDay.isEmpty()) {
+                    val defaultValue = StepEntity()
+                    defaultValue.date = startOfWeek.plusDays(day)
+                    resultList.add(defaultValue) // 如果没有数据，添加默认值
+                } else {
+                    resultList.addAll(dataForDay) // 如果有数据，添加数据
+                }
+            }
+            emit(resultList)
         }
     }
 
@@ -67,7 +88,7 @@ class StepVM : BaseViewModel() {
      * 查询本月步数
      * @return Flow<List<StepEntity>>
      */
-    fun queryStepCurMonth()  = liveData(Dispatchers.IO) {
+    fun queryStepCurMonth() = liveData(Dispatchers.IO) {
         val now = LocalDate.now()
         val startOfMonth = now.withDayOfMonth(1)
         val endOfMonth = now.withDayOfMonth(now.lengthOfMonth())
@@ -82,17 +103,8 @@ class StepVM : BaseViewModel() {
      * @param step StepEntity
      * @return Flow<String>
      */
-    fun insertStep(step: StepEntity) = viewModelScope.launch {
+    fun insertStep(step: StepEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.insertStep(step)
-    }
-
-    /**
-     * 删除
-     * @param step StepEntity
-     * @return Flow<String>
-     */
-    fun deleteStep(step: StepEntity) = viewModelScope.launch {
-        repository.deleteStep(step)
     }
 
     /**
@@ -100,7 +112,7 @@ class StepVM : BaseViewModel() {
      * @param step StepEntity
      * @return Flow<String>
      */
-    fun updateStep(step: StepEntity) = viewModelScope.launch {
+    fun updateStep(step: StepEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.updateStep(step)
     }
 }

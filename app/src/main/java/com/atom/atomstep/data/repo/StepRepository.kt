@@ -54,18 +54,6 @@ class StepRepository : BaseRepository() {
      */
     suspend fun insertStep(step: StepEntity) = stepDao.insertStep(step)
 
-    /**
-     * 删除
-     * @param step StepEntity
-     * @return Flow<String>
-     */
-    suspend fun deleteStep(step: StepEntity) = stepDao.deleteStep(step)
-
-    /**
-     * 更新
-     * @param step StepEntity
-     * @return Flow<String>
-     */
     suspend fun updateStep(step: StepEntity) = stepDao.updateStep(step)
 
 }

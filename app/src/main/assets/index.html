@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>ECharts</title>
+    <!-- 引入刚刚下载的 ECharts 文件 -->
+    <script src="echarts.js"></script>
+</head>
+<body style="margin:0;padding:0">
+<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+<div id="main" style="width: 100%;height:380px;"></div>
+<script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+option = {
+  backgroundColor: '#F0F0F0',
+
+  xAxis: {
+    animation: true,
+    axisLine: {
+      lineStyle: {
+        color: '#999999',
+        width: 2 // 设置线条宽度为2px
+      }
+    },
+    axisLabel: {
+      show: true,
+      color: function (value, index) {
+        // 设置 X 轴标签颜色为白色，最后一条数据颜色为红色
+        if (index === 6) {
+          return '#13C93E'; // 最后一条数据的颜色设置为红色
+        } else {
+          return '#666666'; // 其他数据的颜色设置为白色
+        }
+      }
+    },
+    data: ['10/1', '10/2', '10/3', '10/4', '10/5', '10/6', '10/7']
+  },
+  yAxis: {
+    splitLine: {
+      lineStyle: {
+        color: '#666666', // 设置分割线颜色为红色
+        type: 'dashed', // 设置分割线类型为虚线
+        width: 1, // 设置分割线宽度为2px
+        show: true // 显示分割线
+      }
+    },
+    axisLabel: {
+      show: false,
+      color: 'white' // 这是关键所在，将颜色设置为红色
+    },
+  },
+  series: [
+    {
+      sampling: 'lttb',
+      name: '',
+      type: 'bar',
+      data: [4500, 5600, 8600, 6500, 3058, 8950, 3652],
+      markLine: {
+        silent: true,
+        lineStyle: {
+          color: '#13C93E'
+        },
+        data: [
+          {
+            yAxis: 6000
+          }
+        ]
+      },
+       barWidth: 20,
+      showBackground: false,
+      backgroundStyle: {
+        borderRadius: [100, 100, 100, 100] //（顺时针左上，右上，右下，左下）
+      },
+      itemStyle: {
+        borderRadius: [100, 100, 100, 100],
+        color: function (params) {
+          var value = params.data;
+          return value >= 10 ? '#13C93E' : '#ffffff';
+        }
+      },
+      label: {
+        show: true,
+        position: 'top',
+        color: function (value, index) {
+        // 设置 X 轴标签颜色为白色，最后一条数据颜色为红色
+        if (index === 6) {
+          return '#13C93E'; // 最后一条数据的颜色设置为红色
+        } else {
+          return '#666666'; // 其他数据的颜色设置为白色
+        }
+      },
+        textStyle: {
+          fontSize: 12,
+          fontWeight: 'bold'
+        },
+        distance: 6
+      }
+    }
+  ],
+   grid: {  //方法 2
+							top:20,
+						bottom:20,
+							left:20,
+							right:20,
+							containLabel: true
+							}
+};
+
+
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+
+
+// 设置默认显示的数据索引
+var defaultIndex = 1;
+
+// 使用dispatchAction方法触发highlight事件
+myChart.dispatchAction({
+    type: 'highlight',
+    seriesIndex: 0,
+    dataIndex: defaultIndex
+});
+
+// 使用dispatchAction方法触发showTip事件
+myChart.dispatchAction({
+    type: 'showTip',
+    seriesIndex: 0,
+    dataIndex: defaultIndex
+});
+
+</script>
+</body>
+</html>

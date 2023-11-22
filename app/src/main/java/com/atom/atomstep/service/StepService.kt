@@ -1,6 +1,10 @@
 package com.atom.atomstep.service
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,29 +14,26 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.*
+import android.os.IBinder
 import androidx.annotation.Nullable
-import androidx.core.app.ServiceCompat.stopForeground
 import com.atom.atomstep.R
 import com.atom.atomstep.app.AtomApp
 import com.atom.atomstep.data.constant.ConstantData
+import com.atom.atomstep.data.constant.ConstantData.Companion.ACTION_DATA
 import com.atom.atomstep.data.entity.StepEntity
-import com.atom.atomstep.data.repo.StepRepository
 import com.atom.atomstep.ui.MainActivity
 import com.atom.atomstep.utils.LogUtils
 import com.atom.atomstep.utils.TimeUtil
-import com.drake.channel.sendEvent
-import com.drake.channel.sendTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
+import java.util.Date
 
 /**
  * Created by fySpring
@@ -76,8 +77,9 @@ class StepService : Service(), SensorEventListener {
         super.onCreate()
         initBroadcastReceiver()
         initTodayData()
-        getStepDetector()
     }
+
+
 
     @Nullable
     override fun onBind(intent: Intent): IBinder? {
@@ -114,6 +116,7 @@ class StepService : Service(), SensorEventListener {
         setStepBuilder()
         // 参数一：唯一的通知标识；参数二：通知消息。
         startForeground(ConstantData.NOTIFY_ID, builder?.build())// 开始前台服务
+
         return START_STICKY
     }
 
@@ -123,16 +126,6 @@ class StepService : Service(), SensorEventListener {
      */
     private fun initBroadcastReceiver() {
         val filter = IntentFilter()
-        // 屏幕灭屏广播
-        filter.addAction(Intent.ACTION_SCREEN_OFF)
-        //关机广播
-        filter.addAction(Intent.ACTION_SHUTDOWN)
-        // 屏幕解锁广播
-        filter.addAction(Intent.ACTION_USER_PRESENT)
-        // 当长按电源键弹出“关机”对话或者锁屏时系统会发出这个广播
-        // example：有时候会用到系统对话框，权限可能很高，会覆盖在锁屏界面或者“关机”对话框之上，
-        // 所以监听这个广播，当收到时就隐藏自己的对话，如点击pad右下角部分弹出的对话框
-        filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
         //监听日期变化
         filter.addAction(Intent.ACTION_DATE_CHANGED)
         filter.addAction(Intent.ACTION_TIME_CHANGED)
@@ -141,16 +134,6 @@ class StepService : Service(), SensorEventListener {
         mInfoReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 when (intent.action) {
-                    // 屏幕灭屏广播
-                    Intent.ACTION_SCREEN_OFF -> saveStepData()
-                    //关机广播，保存好当前数据
-                    Intent.ACTION_SHUTDOWN -> saveStepData()
-                    // 屏幕解锁广播
-                    Intent.ACTION_USER_PRESENT -> saveStepData()
-                    // 当长按电源键弹出“关机”对话或者锁屏时系统会发出这个广播
-                    // example：有时候会用到系统对话框，权限可能很高，会覆盖在锁屏界面或者“关机”对话框之上，
-                    // 所以监听这个广播，当收到时就隐藏自己的对话，如点击pad右下角部分弹出的对话框
-                    Intent.ACTION_CLOSE_SYSTEM_DIALOGS -> saveStepData()
                     //监听日期变化
                     Intent.ACTION_DATE_CHANGED, Intent.ACTION_TIME_CHANGED, Intent.ACTION_TIME_TICK -> {
                         saveStepData()
@@ -170,9 +153,13 @@ class StepService : Service(), SensorEventListener {
 
         coroutineScope.launch {
             val stepEntity = stepDao.queryStepCurrent(LocalDate.now())
+            LogUtils.e("stepEntity:$stepEntity")
             currentStep =
                 if (stepEntity == null) 0 else Integer.parseInt(stepEntity.step.toString())
+            getStepDetector()
+            sendDataToActivity(currentStep)
         }
+
 
     }
 
@@ -206,21 +193,23 @@ class StepService : Service(), SensorEventListener {
     private fun addCountStepListener() {
         val countSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         val detectorSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
-        if (countSensor != null) {
-            stepSensor = 0
-            sensorManager!!.registerListener(
-                this@StepService,
-                countSensor,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        } else if (detectorSensor != null) {
+        if (detectorSensor != null) {
             stepSensor = 1
             sensorManager!!.registerListener(
                 this@StepService,
                 detectorSensor,
                 SensorManager.SENSOR_DELAY_NORMAL
             )
+        } else if (countSensor != null) {
+            stepSensor = 0
+            sensorManager!!.registerListener(
+                this@StepService,
+                countSensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
         }
+
+        LogUtils.e("======stepSensor=======$stepSensor")
     }
 
     /**
@@ -238,14 +227,17 @@ class StepService : Service(), SensorEventListener {
                 val thisStepCount = tempStep - hasStepCount
                 currentStep += thisStepCount - previousStepCount
                 previousStepCount = thisStepCount
+                saveStepData()
             }
-            saveStepData()
+
         } else if (stepSensor == 1) {
             if (event.values[0].toDouble() == 1.0) {
                 currentStep++
                 saveStepData()
             }
         }
+
+        LogUtils.e("======onSensorChanged=======$currentStep")
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
@@ -258,17 +250,19 @@ class StepService : Service(), SensorEventListener {
      */
     private fun saveStepData() {
         coroutineScope.launch {
-            val stepEntity = stepDao.queryStepCurrent(LocalDate.now())
-            if (stepEntity == null) {
-                val data = StepEntity(date = LocalDate.now(), step = 0)
+
+            LogUtils.e("===saveStepData====")
+            var data = stepDao.queryStepCurrent(LocalDate.now())
+            if (data == null){
+                data = StepEntity()
                 stepDao.insertStep(data)
             } else {
-                stepEntity.step = currentStep
-                stepDao.updateStep(stepEntity)
+                data.step = currentStep
+                stepDao.updateStep(data)
             }
-
-            setStepBuilder()
         }
+        setStepBuilder()
+        sendDataToActivity(currentStep)
     }
 
     private fun setStepBuilder() {
@@ -293,8 +287,12 @@ class StepService : Service(), SensorEventListener {
         val stepNotification = builder?.build()
         //调用更新
         notificationManager?.notify(ConstantData.NOTIFY_ID, stepNotification)
-        LogUtils.e("今日步数" + currentStep + "步")
+    }
 
+    private fun sendDataToActivity(data: Int) {
+        val intent = Intent(ACTION_DATA)
+        intent.putExtra("data", data)
+        sendBroadcast(intent)
     }
 
     override fun onDestroy() {

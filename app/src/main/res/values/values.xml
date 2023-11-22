@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference" name="WheelStyle"/>
+    <attr format="boolean|reference" name="wheel_atmosphericEnabled"/>
+    <attr format="color|reference" name="wheel_curtainColor"/>
+    <attr format="enum" name="wheel_curtainCorner">
+        <enum name="none" value="0"/>
+        <enum name="all" value="1"/>
+        <enum name="top" value="2"/>
+        <enum name="bottom" value="3"/>
+        <enum name="left" value="4"/>
+        <enum name="right" value="5"/>
+    </attr>
+    <attr format="boolean|reference" name="wheel_curtainEnabled"/>
+    <attr format="dimension|reference" name="wheel_curtainRadius"/>
+    <attr format="boolean|reference" name="wheel_curvedEnabled"/>
+    <attr format="dimension|reference" name="wheel_curvedIndicatorSpace"/>
+    <attr format="integer|reference" name="wheel_curvedMaxAngle"/>
+    <attr format="boolean|reference" name="wheel_cyclicEnabled"/>
+    <attr format="color|reference" name="wheel_indicatorColor"/>
+    <attr format="boolean|reference" name="wheel_indicatorEnabled"/>
+    <attr format="dimension|reference" name="wheel_indicatorSize"/>
+    <attr format="dimension|reference" name="wheel_itemSpace"/>
+    <attr format="enum" name="wheel_itemTextAlign">
+        <enum name="center" value="0"/>
+        <enum name="left" value="1"/>
+        <enum name="right" value="2"/>
+    </attr>
+    <attr format="boolean|reference" name="wheel_itemTextBoldSelected"/>
+    <attr format="color|reference" name="wheel_itemTextColor"/>
+    <attr format="color|reference" name="wheel_itemTextColorSelected"/>
+    <attr format="dimension|reference" name="wheel_itemTextSize"/>
+    <attr format="dimension|reference" name="wheel_itemTextSizeSelected"/>
+    <attr format="string|reference" name="wheel_maxWidthText"/>
+    <attr format="boolean|reference" name="wheel_sameWidthEnabled"/>
+    <attr format="integer|reference" name="wheel_visibleItemCount"/>
+    <style name="WheelDefault">
+        <item name="wheel_visibleItemCount">5</item>
+        <item name="wheel_itemTextAlign">center</item>
+        <item name="wheel_itemSpace">30dp</item>
+        <item name="wheel_itemTextColor">#FF999999</item>
+        <item name="wheel_itemTextColorSelected">#FF000000</item>
+        <item name="wheel_itemTextSize">18sp</item>
+        <item name="wheel_itemTextSizeSelected">18sp</item>
+        <item name="wheel_itemTextBoldSelected">false</item>
+        <item name="wheel_sameWidthEnabled">false</item>
+        <item name="wheel_atmosphericEnabled">true</item>
+        <item name="wheel_curtainEnabled">false</item>
+        <item name="wheel_curtainColor">#FFDEDEDE</item>
+        <item name="wheel_curvedEnabled">false</item>
+        <item name="wheel_curvedMaxAngle">90</item>
+        <item name="wheel_cyclicEnabled">false</item>
+        <item name="wheel_indicatorEnabled">true</item>
+        <item name="wheel_indicatorColor">#FFDEDEDE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+    <declare-styleable name="WheelView">
+        <attr name="wheel_visibleItemCount"/>
+        <attr name="wheel_itemTextSize"/>
+        <attr name="wheel_itemTextSizeSelected"/>
+        <attr name="wheel_itemTextColor"/>
+        <attr name="wheel_itemTextColorSelected"/>
+        <attr name="wheel_itemTextBoldSelected"/>
+        <attr name="wheel_itemSpace"/>
+        <attr name="wheel_itemTextAlign"/>
+        <attr name="wheel_sameWidthEnabled"/>
+        <attr name="wheel_maxWidthText"/>
+        <attr name="wheel_cyclicEnabled"/>
+        <attr name="wheel_indicatorEnabled"/>
+        <attr name="wheel_indicatorColor"/>
+        <attr name="wheel_indicatorSize"/>
+        <attr name="wheel_curtainEnabled"/>
+        <attr name="wheel_curtainColor"/>
+        <attr name="wheel_curtainCorner"/>
+        <attr name="wheel_curtainRadius"/>
+        <attr name="wheel_atmosphericEnabled"/>
+        <attr name="wheel_curvedEnabled"/>
+        <attr name="wheel_curvedMaxAngle"/>
+        <attr name="wheel_curvedIndicatorSpace"/>
+    </declare-styleable>
+</resources>
