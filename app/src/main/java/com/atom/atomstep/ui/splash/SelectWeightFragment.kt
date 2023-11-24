@@ -36,9 +36,8 @@ class SelectWeightFragment : BaseDataBindingFragment() {
 
         mBinding = binding(inflater, R.layout.fragment_select_weight, container)
 
-        userWeight = 60
         mBinding.apply {
-            wheelWeight.setData(setRange(30, 100, 1), 30)
+            wheelWeight.setData(setRange(30, 100, 1), userWeight-30)
             wheelWeight.setOnWheelChangedListener(object : OnWheelChangedListener {
                 override fun onWheelScrolled(view: WheelView?, offset: Int) {
 

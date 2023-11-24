@@ -9,6 +9,7 @@ import coil.transform.CircleCropTransformation
 import com.atom.atomstep.R
 import com.atom.atomstep.base.BaseDataBindingFragment
 import com.atom.atomstep.databinding.FragmentMineBinding
+import com.atom.atomstep.ext.throttleClick
 import com.atom.atomstep.utils.DimenUtils
 import com.atom.atomstep.utils.Preference
 
@@ -19,10 +20,16 @@ import com.atom.atomstep.utils.Preference
  */
 class MineFragment : BaseDataBindingFragment() {
     private lateinit var mBinding: FragmentMineBinding
-    private var userGender by Preference(Preference.userGender, 18)
+    private var userGender by Preference(Preference.userGender, 1)
     private var userAge by Preference(Preference.userAge, 18)
-    private var userHeight by Preference(Preference.userHeight, 18)
-    private var userWeight by Preference(Preference.userWeight, 18)
+    private var userHeight by Preference(Preference.userHeight, 170)
+    private var userWeight by Preference(Preference.userWeight, 60)
+    private var goatStep by Preference(Preference.goatStep, 5000)
+
+    override fun onResume() {
+        super.onResume()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +40,54 @@ class MineFragment : BaseDataBindingFragment() {
 
         mBinding.apply {
             statusBarHeight = DimenUtils.getStatusBarHeight(requireActivity())
+            updateView()
+            clAge.throttleClick {
+                val dialog = SelectAgeDialog()
+                dialog.show(requireActivity().supportFragmentManager, "age")
+                dialog.callback = {
+                    updateView()
+                }
+            }
 
+            clHeight.throttleClick {
+                val dialog = SelectHeightDialog()
+                dialog.show(requireActivity().supportFragmentManager, "height")
+                dialog.callback = {
+                    updateView()
+                }
+            }
+
+            clWeight.throttleClick {
+                val dialog = SelectWeightDialog()
+                dialog.show(requireActivity().supportFragmentManager, "weight")
+                dialog.callback = {
+                    updateView()
+                }
+            }
+
+            clGender.throttleClick {
+                val dialog = SelectGenderDialog()
+                dialog.show(requireActivity().supportFragmentManager, "gender")
+                dialog.callback = {
+                    updateView()
+                }
+            }
+
+            clGoat.throttleClick {
+                val dialog = SelectGoatDialog()
+                dialog.show(requireActivity().supportFragmentManager, "goat")
+                dialog.callback = {
+                    updateView()
+                }
+            }
+        }
+
+
+        return mBinding.root
+    }
+
+    private fun updateView() {
+        mBinding.apply {
             if (userGender == 1) {
                 ivPhoto.load(R.drawable.ic_gender_man) {
                     transformations(CircleCropTransformation())
@@ -52,10 +106,10 @@ class MineFragment : BaseDataBindingFragment() {
             } else {
                 "女"
             }
+
+            tvGoat.text = "$goatStep 步"
+
         }
-
-
-        return mBinding.root
     }
 
 }

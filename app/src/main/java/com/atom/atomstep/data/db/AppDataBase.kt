@@ -5,7 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.atom.atomstep.data.dao.DrinkDao
 import com.atom.atomstep.data.dao.StepDao
+import com.atom.atomstep.data.entity.DrinkEntity
 import com.atom.atomstep.data.entity.StepEntity
 
 /**
@@ -14,12 +16,13 @@ import com.atom.atomstep.data.entity.StepEntity
  *  description :
  */
 @Database(
-    entities = [StepEntity::class], version = 1, exportSchema = false
+    entities = [StepEntity::class,DrinkEntity::class], version = 2, exportSchema = false
 )
 @TypeConverters(value = [LocalTypeConverter::class])
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun stepDao(): StepDao
+    abstract fun drinkDao(): DrinkDao
 
     companion object {
 

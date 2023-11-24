@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/ic_act_bg">
+
         <TextView
             android:id="@+id/tv_top"
             bindStatusBarHeight="@{statusBarHeight}"
@@ -21,30 +22,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_total_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_36"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_top" />
+
         <TextView
             android:id="@+id/tv_avg_step_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_top"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="本周日均步数"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/color_progress_grey_bg"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_16"/>
-        <TextView
-            android:id="@+id/tv_avg_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_avg_step_tip"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/sp_36"
-            android:text="2000"
+            android:text="总步数"
             android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_6"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_total_step" />
+
+
 
         <ImageView
             android:id="@+id/iv_container"
@@ -55,28 +58,216 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_avg_step" />
+            app:layout_constraintTop_toBottomOf="@id/tv_avg_step_tip" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/iv_container"
-            app:layout_constraintStart_toStartOf="@id/iv_container"
-            app:layout_constraintEnd_toEndOf="@id/iv_container"
-            app:layout_constraintBottom_toBottomOf="@id/iv_container"
             android:layout_marginTop="@dimen/dp_20"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="@id/iv_container"
+            app:layout_constraintEnd_toEndOf="@id/iv_container"
+            app:layout_constraintStart_toStartOf="@id/iv_container"
+            app:layout_constraintTop_toTopOf="@id/iv_container">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/ll_table_type"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:textColor="@color/color_text_title"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_table_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@drawable/select_table_type_bg">
+                    <TextView
+                        android:id="@+id/tv_bar"
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:textColor="@color/color_text_title"
+                        android:background="@drawable/select_table_type_bg"
+                        android:textSize="@dimen/sp_12"
+                        android:text="柱"
+                        android:layout_margin="@dimen/dp_6"/>
+                    <TextView
+                        android:id="@+id/tv_line"
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:gravity="center"
+                        android:textColor="@color/color_text_title"
+                        android:background="@drawable/select_table_type_bg"
+                        android:textSize="@dimen/sp_12"
+                        android:text="折"
+                        android:layout_marginVertical="@dimen/dp_6"
+                        android:layout_marginEnd="@dimen/dp_6"/>
+                </LinearLayout>
+
+
                 <WebView
                     android:id="@+id/web_echart"
                     android:layout_width="0dp"
-                    android:layout_height="380dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/ll_table_type" />
+
+
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/web_echart"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:layout_margin="@dimen/dp_20"
+                  android:background="@drawable/shape_item_bg"
+                  android:padding="@dimen/dp_20"
+                  android:orientation="vertical">
+                  <TextView
+                      android:id="@+id/tv_week_data"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="本周数据汇总"
+                      app:layout_constraintTop_toBottomOf="@id/web_echart"
+                      app:layout_constraintStart_toStartOf="parent"
+                      android:textStyle="bold"
+                      android:textSize="@dimen/sp_14"
+                      android:textColor="@color/color_text_title"
+                      />
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="@dimen/dp_20">
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:gravity="center_vertical">
+                          <ImageView
+                              android:layout_width="@dimen/dp_30"
+                              android:layout_height="@dimen/dp_30"
+                              android:src="@drawable/step_walk" />
+                          <TextView
+                              android:id="@+id/tv_week_step"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="@dimen/dp_10"
+
+                              android:textColor="@color/color_text_title"
+                              android:textSize="@dimen/sp_16"/>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:textColor="@color/color_text_sub"
+                              android:textSize="@dimen/sp_16"
+                              android:layout_marginStart="@dimen/dp_4"
+                              android:text="步"/>
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:gravity="center_vertical">
+                          <ImageView
+                              android:layout_width="@dimen/dp_30"
+                              android:layout_height="@dimen/dp_30"
+                              android:src="@drawable/step_miles" />
+                          <TextView
+                              android:id="@+id/tv_week_miles"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="@dimen/dp_10"
+
+                              android:textColor="@color/color_text_title"
+                              android:textSize="@dimen/sp_16"/>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:textColor="@color/color_text_sub"
+                              android:textSize="@dimen/sp_16"
+                              android:layout_marginStart="@dimen/dp_4"
+                              android:text="公里"/>
+                      </LinearLayout>
+                  </LinearLayout>
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="@dimen/dp_16">
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:gravity="center_vertical">
+                          <ImageView
+                              android:layout_width="@dimen/dp_30"
+                              android:layout_height="@dimen/dp_30"
+                              android:src="@drawable/step_time" />
+                          <TextView
+                              android:id="@+id/tv_week_time"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="@dimen/dp_10"
+
+                              android:textColor="@color/color_text_title"
+                              android:textSize="@dimen/sp_16"/>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:textColor="@color/color_text_sub"
+                              android:textSize="@dimen/sp_16"
+                              android:layout_marginStart="@dimen/dp_4"
+                              android:text="分钟"/>
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:gravity="center_vertical">
+                          <ImageView
+                              android:layout_width="@dimen/dp_30"
+                              android:layout_height="@dimen/dp_30"
+                              android:src="@drawable/step_calories" />
+                          <TextView
+                              android:id="@+id/tv_week_calories"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="@dimen/dp_10"
+
+                              android:textColor="@color/color_text_title"
+                              android:textSize="@dimen/sp_16"/>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:textColor="@color/color_text_sub"
+                              android:textSize="@dimen/sp_16"
+                              android:layout_marginStart="@dimen/dp_4"
+                              android:text="千卡"/>
+                      </LinearLayout>
+                  </LinearLayout>
+
+
+
+              </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

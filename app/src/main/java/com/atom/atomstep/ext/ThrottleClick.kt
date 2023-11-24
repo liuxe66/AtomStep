@@ -25,11 +25,11 @@ internal class ThrottleClickListener(
 
         if (currentTime - lastTime > unit.toMillis(interval)) {
             lastTime = currentTime
-            v.animate().scaleY(0.9f).scaleX(0.9f).setDuration(100).withEndAction {
-                v.animate().scaleY(1.0f).scaleX(1.0f).setDuration(100).withEndAction {
-
-                }
-            }
+//            v.animate().scaleY(0.9f).scaleX(0.9f).setDuration(100).withEndAction {
+//                v.animate().scaleY(1.0f).scaleX(1.0f).setDuration(100).withEndAction {
+//
+//                }
+//            }
             block(v)
         }
 

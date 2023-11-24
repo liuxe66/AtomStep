@@ -1,4 +1,4 @@
-package com.atom.atomstep.ui.splash
+package com.atom.atomstep.ui.mine
 
 import android.content.Context
 import android.os.Bundle
@@ -7,46 +7,59 @@ import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getSystemService
 import com.atom.atomstep.R
-import com.atom.atomstep.base.BaseDataBindingFragment
-import com.atom.atomstep.databinding.FragmentSelectAgeBinding
-import com.atom.atomstep.databinding.FragmentSelectGenderBinding
-import com.atom.atomstep.databinding.FragmentSelectWeightBinding
+import com.atom.atomstep.base.BaseBottomSheetDialogFragment
+import com.atom.atomstep.databinding.FragmentSelectBinding
 import com.atom.atomstep.ext.throttleClick
+import com.atom.atomstep.utils.LogUtils
 import com.atom.atomstep.utils.Preference
+import com.atom.atomstep.utils.Preference.Companion.userAge
 import com.atom.atomstep.utils.Preference.Companion.userWeight
 import com.atom.atomstep.widget.wheelview.contract.OnWheelChangedListener
 import com.atom.atomstep.widget.wheelview.widget.WheelView
 
 /**
  *  author : liuxe
- *  date : 2023/11/20 14:53
+ *  date : 2023/11/23 13:28
  *  description :
  */
-class SelectAgeFragment : BaseDataBindingFragment() {
+class SelectWeightDialog : BaseBottomSheetDialogFragment() {
+    private lateinit var mBinding: FragmentSelectBinding
 
-    private lateinit var mBinding: FragmentSelectAgeBinding
-
-    private var userAge by Preference(Preference.userAge,18)
     private var vibrator: Vibrator? = null
+    private var userWeight by Preference(Preference.userWeight,60)
+    private var temp= userWeight
+    lateinit var callback: () -> Unit
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vibrator = requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        vibrator = requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
-
-        mBinding = binding(inflater, R.layout.fragment_select_age, container)
+        mBinding = binding(inflater, R.layout.fragment_select, container)
 
         mBinding.apply {
-            wheelAge.setData(setRange(10, 60, 1), userAge-10)
-            wheelAge.setOnWheelChangedListener(object : OnWheelChangedListener {
+
+            tvTitle.text = "体重(kg)"
+            ivClose.setOnClickListener {
+                callback.invoke()
+                dialog?.dismiss()
+            }
+            tvSubmit.throttleClick {
+                userWeight = temp
+                callback.invoke()
+                dialog?.dismiss()
+            }
+            wheelView.setData(setRange(30, 100, 1), temp-30)
+            wheelView.setOnWheelChangedListener(object : OnWheelChangedListener {
                 override fun onWheelScrolled(view: WheelView?, offset: Int) {
 
                 }
 
                 override fun onWheelSelected(view: WheelView?, position: Int) {
-                    userAge = 10 + position
+                    temp = 30 + position
                 }
 
                 override fun onWheelScrollStateChanged(view: WheelView?, state: Int) {
@@ -63,7 +76,6 @@ class SelectAgeFragment : BaseDataBindingFragment() {
         }
         return mBinding.root
     }
-
 
     fun setRange(min: Int, max: Int, step: Int): MutableList<String> {
         val minValue = Math.min(min, max)

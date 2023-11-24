@@ -123,9 +123,9 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/step_walk" />
+                    android:layout_width="@dimen/dp_36"
+                    android:layout_height="@dimen/dp_36"
+                    android:src="@drawable/step_time" />
 
                 <TextView
                     android:id="@+id/tv_today_step"
@@ -154,8 +154,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_36"
+                    android:layout_height="@dimen/dp_36"
                     android:src="@drawable/step_calories" />
 
                 <TextView
@@ -185,8 +185,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_36"
+                    android:layout_height="@dimen/dp_36"
                     android:src="@drawable/step_miles" />
 
                 <TextView
@@ -279,7 +279,7 @@
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_text_sub"
                 android:layout_marginBottom="@dimen/dp_10"
-                android:text="/1200ml"/>
+                android:text=""/>
 
             <TextView
                 android:id="@+id/tv_drink_add"

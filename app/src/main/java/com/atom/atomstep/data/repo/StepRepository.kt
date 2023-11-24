@@ -2,6 +2,7 @@ package com.atom.atomstep.data.repo
 
 import com.atom.atomstep.app.AtomApp
 import com.atom.atomstep.base.BaseRepository
+import com.atom.atomstep.data.entity.DrinkEntity
 import com.atom.atomstep.data.entity.StepEntity
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -14,6 +15,7 @@ import java.time.LocalDateTime
 class StepRepository : BaseRepository() {
 
     val stepDao = AtomApp.appDatabase.stepDao()
+    val drinkDao = AtomApp.appDatabase.drinkDao()
 
     /**
      * 查询今天步数
@@ -55,5 +57,13 @@ class StepRepository : BaseRepository() {
     suspend fun insertStep(step: StepEntity) = stepDao.insertStep(step)
 
     suspend fun updateStep(step: StepEntity) = stepDao.updateStep(step)
+
+
+
+    fun queryDrinkByDay() = drinkDao.queryDrinkByDay(LocalDate.now())
+
+    suspend fun insertDrink(drink: DrinkEntity) = drinkDao.insertDrink(drink)
+
+    suspend fun updateDrink(drink: DrinkEntity) = drinkDao.updateDrink(drink)
 
 }

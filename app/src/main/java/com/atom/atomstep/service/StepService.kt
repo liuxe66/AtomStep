@@ -193,18 +193,18 @@ class StepService : Service(), SensorEventListener {
     private fun addCountStepListener() {
         val countSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         val detectorSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
-        if (detectorSensor != null) {
-            stepSensor = 1
-            sensorManager!!.registerListener(
-                this@StepService,
-                detectorSensor,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        } else if (countSensor != null) {
+        if (countSensor != null) {
             stepSensor = 0
             sensorManager!!.registerListener(
                 this@StepService,
                 countSensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        } else if (detectorSensor != null) {
+            stepSensor = 1
+            sensorManager!!.registerListener(
+                this@StepService,
+                detectorSensor,
                 SensorManager.SENSOR_DELAY_NORMAL
             )
         }

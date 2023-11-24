@@ -1,13 +1,16 @@
 package com.atom.atomstep.ui
 
 import android.Manifest
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -23,6 +26,7 @@ import com.atom.atomstep.ext.launchActivity
 import com.atom.atomstep.ext.throttleClick
 import com.atom.atomstep.ext.toActivity
 import com.atom.atomstep.service.StepService
+import com.atom.atomstep.ui.mine.SelectAgeDialog
 import com.atom.atomstep.ui.splash.FirstSettingActivity
 import com.atom.atomstep.utils.LogUtils
 import com.atom.atomstep.utils.Preference
@@ -77,7 +81,7 @@ class MainActivity : BaseDataBindingActivity() {
             mBinding.apply {
                 vpMain.adapter = mainPageAdapter
 
-                vpMain.offscreenPageLimit = 3
+                vpMain.offscreenPageLimit = 1
                 vpMain.isUserInputEnabled = false
 
                 curTag = homeTag
@@ -150,7 +154,11 @@ class MainActivity : BaseDataBindingActivity() {
 
 
     override fun onBackPressed() {
-        toast("退出")
+        val dialog = AppOutDialog()
+        dialog.show(supportFragmentManager, "appout")
+        dialog.callback = {
+           finish()
+        }
     }
 
 

@@ -8,22 +8,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_24"
-            android:layout_marginTop="@dimen/dp_48"
-            android:text="您的性别？"
-            android:textSize="@dimen/sp_24"
+            android:layout_marginTop="@dimen/dp_24"
+            android:text="性别"
+            android:textSize="@dimen/sp_20"
             android:textStyle="bold"
             android:textColor="@color/color_text_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:src="@drawable/baseline_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/dp_24"/>
 
         <TextView
             android:id="@+id/tv_title_sub"
@@ -38,7 +45,6 @@
             android:textSize="@dimen/sp_12"
             android:textColor="@color/color_text_sub"
             android:text="计算卡路里消耗和步行里程需要此数据"/>
-
         <LinearLayout
             android:id="@+id/ll_man"
             android:layout_width="0dp"
@@ -94,7 +100,23 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
         </LinearLayout>
-
-
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ll_woman"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/dp_24"
+            android:layout_marginHorizontal="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_48"
+            android:background="@drawable/shape_submit_btn_bg"
+            android:text="确定"
+            android:textSize="@dimen/sp_20"
+            android:paddingVertical="@dimen/dp_10"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

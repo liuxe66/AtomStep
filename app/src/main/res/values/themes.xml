@@ -25,6 +25,6 @@
     </style>
 
     <style name="AppBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background"></item>
+        <item name="android:background">@drawable/shape_item_bg</item>
     </style>
 </resources>

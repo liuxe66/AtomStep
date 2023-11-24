@@ -34,9 +34,8 @@ class SelectHeightFragment : BaseDataBindingFragment() {
 
         mBinding = binding(inflater, R.layout.fragment_select_height, container)
 
-        userHeight = 170
         mBinding.apply {
-            wheelHeight.setData(setRange(60, 220, 1), 110)
+            wheelHeight.setData(setRange(60, 220, 1), userHeight-60)
             wheelHeight.setOnWheelChangedListener(object : OnWheelChangedListener {
                 override fun onWheelScrolled(view: WheelView?, offset: Int) {
 

@@ -25,7 +25,8 @@ class Preference<T>() {
         const val userWeight = "userWeight"  //默认 60kg
         const val userAge = "userAge"  //默认 24
         const val userGender = "userGender"  //1 男 0 女
-
+        const val goatStep = "goatStep"  //默认 5000cm
+        const val tableType = "tableType" // 0折 1柱
     }
 
     constructor(keyName: String,defaultValue: T) : this() {

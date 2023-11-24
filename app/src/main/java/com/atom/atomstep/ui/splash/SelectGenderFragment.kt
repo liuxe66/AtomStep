@@ -27,7 +27,6 @@ class SelectGenderFragment : BaseDataBindingFragment() {
         mBinding = binding(inflater, R.layout.fragment_select_gender, container)
 
         mBinding.apply {
-            userGender = 1
             llMan.isSelected = true
 
             llMan.throttleClick {

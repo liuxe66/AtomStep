@@ -8,21 +8,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_24"
-            android:layout_marginTop="@dimen/dp_48"
-            android:text="您的体重(kg)？"
-            android:textSize="@dimen/sp_24"
+            android:layout_marginTop="@dimen/dp_24"
+            android:text="您确定要离开吗？"
+            android:textSize="@dimen/sp_20"
             android:textStyle="bold"
             android:textColor="@color/color_text_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:src="@drawable/baseline_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/dp_24"/>
 
         <TextView
             android:id="@+id/tv_title_sub"
@@ -36,32 +44,25 @@
             android:layout_marginTop="@dimen/dp_8"
             android:textSize="@dimen/sp_12"
             android:textColor="@color/color_text_sub"
-            android:text="计算卡路里消耗和步行里程需要此数据"/>
-        <com.atom.atomstep.widget.wheelview.widget.WheelView
-            android:id="@+id/wheel_weight"
-            android:layout_width="@dimen/dp_0"
+            android:text="健康，每一步都值得"/>
+
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dp_24"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_sub"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:wheel_curtainColor="@color/color_progress_grey_bg"
-            app:wheel_curtainEnabled="true"
-            app:wheel_curtainRadius="@dimen/dp_100"
-            app:wheel_cyclicEnabled="false"
-            app:wheel_curtainCorner="all"
-            app:wheel_indicatorEnabled="false"
-            app:wheel_itemTextSize="@dimen/sp_20"
-            app:wheel_itemTextSizeSelected="@dimen/sp_24"
-            app:wheel_itemTextColorSelected="@color/green_1"
-            app:wheel_itemTextColor="@color/color_text_title"
-            app:wheel_visibleItemCount="5"
-            app:wheel_itemSpace="@dimen/dp_60"
-            app:wheel_itemTextBoldSelected="true"
-            android:paddingHorizontal="@dimen/dp_16"
-            android:background="@drawable/shape_item_bg" />
-
-
+            android:layout_marginBottom="@dimen/dp_24"
+            android:layout_marginHorizontal="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_48"
+            android:background="@drawable/shape_submit_btn_bg"
+            android:text="确定"
+            android:textSize="@dimen/sp_20"
+            android:paddingVertical="@dimen/dp_10"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

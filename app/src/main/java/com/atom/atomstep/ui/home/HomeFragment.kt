@@ -10,17 +10,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.adapters.SeekBarBindingAdapter.setProgress
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.atom.atomstep.R
 import com.atom.atomstep.base.BaseDataBindingFragment
 import com.atom.atomstep.data.constant.ConstantData.Companion.ACTION_DATA
+import com.atom.atomstep.data.entity.DrinkEntity
+import com.atom.atomstep.data.entity.StepEntity
 import com.atom.atomstep.databinding.FragmentHomeBinding
+import com.atom.atomstep.ext.throttleClick
+import com.atom.atomstep.ui.mine.SelectHeightDialog
 import com.atom.atomstep.utils.DimenUtils
 import com.atom.atomstep.utils.LogUtils
 import com.atom.atomstep.utils.Preference
+import com.atom.atomstep.utils.Preference.Companion.userGender
 import com.atom.atomstep.utils.Preference.Companion.userHeight
+import com.atom.atomstep.vm.DrinkVM
 import com.atom.atomstep.vm.StepVM
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -38,19 +45,23 @@ class HomeFragment : BaseDataBindingFragment() {
 
     private val df = DecimalFormat("#.##")
     private val mStepVM by createViewModel<StepVM>()
+    private val mDrinkVM by createViewModel<DrinkVM>()
 
     private var lastStepNum = 0
 
     private var mBroadcastReceiver: BroadcastReceiver? = null
     private var userGender by Preference(Preference.userGender, 1)
-    private var userHeight by Preference(Preference.userHeight, 1)
+    private var userHeight by Preference(Preference.userHeight, 170)
+    private var userWeight by Preference(Preference.userWeight, 60)
     private var mStepWeekAdapter = StepWeekAdapter()
+
+    private lateinit var curDate: LocalDate
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         mBinding = binding(inflater, R.layout.fragment_home, container)
-
+        curDate = LocalDate.now()
         mBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == ACTION_DATA) {
@@ -66,8 +77,31 @@ class HomeFragment : BaseDataBindingFragment() {
             rvWeek.adapter = mStepWeekAdapter
 
             updateView()
+
+            tvDrinkAdd.throttleClick {
+                val dialog = SelectDrinkDialog()
+                dialog.show(requireActivity().supportFragmentManager, "drink")
+                dialog.callback = { drinknum ->
+                    mDrinkVM.queryDrinkEntityByDay().observe(requireActivity(),
+                        Observer {
+                            var drinkEntity = it
+                            if (drinkEntity == null) {
+                                val drinkEntity = DrinkEntity()
+                                drinkEntity.drinkNum = drinknum
+                                mDrinkVM.insertDrink(drinkEntity)
+                            } else {
+                                drinkEntity.drinkNum = drinkEntity.drinkNum+drinknum
+                                mDrinkVM.insertDrink(drinkEntity)
+                            }
+                        })
+                }
+            }
         }
         return mBinding.root
+    }
+
+    private fun updateDrink() {
+
     }
 
     private fun updateView() {
@@ -78,6 +112,21 @@ class HomeFragment : BaseDataBindingFragment() {
 
         mStepVM.queryStepToday().observe(requireActivity(), Observer {
             setDatas(it?.step ?: 0)
+        })
+
+        mDrinkVM.queryDrinkToday().observe(requireActivity(), Observer {
+            var drinkNum = it?.drinkNum ?: 0
+            mBinding.apply {
+                tvDrink.text = drinkNum.toString()
+                tvDrinkAll.text = "/1600"
+                val progressValue = (drinkNum.toFloat() / 1600 * 100)
+                if (progressValue >= 100) {
+                    progressDrinkPlan.setProgress(100f)
+                } else {
+                    progressDrinkPlan.setProgress(progressValue)
+                }
+            }
+
         })
     }
 
@@ -103,7 +152,7 @@ class HomeFragment : BaseDataBindingFragment() {
             animator.start() // 开始动画
 
 
-            val progressValue = (60000f / 6000 * 100)
+            val progressValue = (curStepNum.toFloat() / 6000 * 100)
             if (progressValue >= 100) {
                 progressStepNum.setProgress(100f)
             } else {
@@ -152,7 +201,7 @@ class HomeFragment : BaseDataBindingFragment() {
 
     /**
      * 步数转换卡路里
-     * 每一步消耗 0.05千卡
+     * 每一步消耗 0.04千卡
      */
     private fun step2Cal(steps: Int): String {
         val totalCal = steps * 0.04

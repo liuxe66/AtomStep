@@ -57,7 +57,7 @@ class StepVM : BaseViewModel() {
      * 查询本周步数
      * @return Flow<List<StepEntity>>
      */
-    fun queryStepCurWeek() = liveData(Dispatchers.IO){
+    fun queryStepCurWeek() = liveData{
         val now = LocalDate.now()
         val startOfWeek = now.minusDays(now.dayOfWeek.value - 1L)
         val endOfWeek = startOfWeek.plusDays(6)
